@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jwm2/Classes/Constants.dart';
 
 import 'OTPScreen.dart';
 
@@ -26,28 +28,32 @@ class _PhoneLoginState extends State<PhoneLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF900c3f),
+      backgroundColor: kWhiteColor,
       body: SingleChildScrollView(
         child: Container(
-          color: Color(0xFF900c3f),
+          color: kWhiteColor,
           padding: EdgeInsets.all(16),
           height: MediaQuery.of(context).size.height,
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              Spacer(),
               Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Image.asset('images/vegetable.png')),
+                padding: const EdgeInsets.all(16.0),
+                child: SvgPicture.asset(
+                  'images/loginjwm2.svg',
+                  height: 250,
+                ),
+              ),
+              Spacer(),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 10),
                 child: Text(
                   'Link your phone number to your account',
-                  style: TextStyle(
-                      fontFamily: 'sf_pro',
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.white),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.title.copyWith(
+                      color: kTextColor.withOpacity(0.7), fontSize: 25.0),
                 ),
               ),
               Padding(
@@ -95,22 +101,22 @@ class _PhoneLoginState extends State<PhoneLogin> {
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.85,
                             child: RaisedButton(
-                              color: !isValid
-                                  ? Color(0xFFfc9d9d)
-                                  : Color(0xFF900c3f),
+                              color: !isValid ? kSecondaryColor : kPrimaryColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15.0)),
                               child: Text(
                                 !isValid ? "ENTER PHONE NUMBER" : "CONTINUE",
                                 style: !isValid
-                                    ? TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold)
-                                    : TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold),
+                                    ? Theme.of(context)
+                                        .textTheme
+                                        .button
+                                        .copyWith(
+                                            fontSize: 20.0, color: kWhiteColor)
+                                    : Theme.of(context)
+                                        .textTheme
+                                        .button
+                                        .copyWith(
+                                            fontSize: 20.0, color: kWhiteColor),
                               ),
                               onPressed: () {
                                 if (isValid) {
@@ -135,6 +141,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                   ),
                 ),
               ),
+              Spacer(),
             ],
           ),
         ),

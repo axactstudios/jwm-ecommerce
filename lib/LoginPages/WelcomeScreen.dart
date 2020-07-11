@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/LoginPages/PhoneLogin.dart';
 
 import '../Drawer/MainHome.dart';
@@ -18,100 +20,91 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     pHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: kWhiteColor,
       body: SafeArea(
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(
                 height: pHeight / 20,
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(40.0, 0, 0, 0),
-                child: Text(
-                  'Grocery Man',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: Color(0xFF900c3f),
-                      fontSize: pHeight / 20,
-                      fontFamily: 'sf_pro',
-                      fontWeight: FontWeight.bold),
-                ),
+              Text(
+                'Pet Shop',
+                textAlign: TextAlign.start,
+                // ignore: deprecated_member_use
+                style:
+                    Theme.of(context).textTheme.headline.copyWith(fontSize: 40),
               ),
               SizedBox(
                 height: pHeight / 70,
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(40.0, 0, 0, 0),
-                child: Text(
-                  'Providing quality products at your doorstep',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                    color: Color(0xFF787878),
-                    fontSize: 25,
-                    fontFamily: 'sf_pro',
-                  ),
-                ),
+              Text(
+                'Providing quality products at your doorstep',
+                textAlign: TextAlign.start,
+                // ignore: deprecated_member_use
+                style: Theme.of(context).textTheme.title.copyWith(
+                      color: kTextColor.withOpacity(0.5),
+                    ),
+              ),
+              Spacer(),
+              SvgPicture.asset(
+                'images/petshop.svg',
+                height: 250,
+              ),
+              Spacer(),
+              Text(
+                'Lets get started',
+                // ignore: deprecated_member_use
+                style: Theme.of(context).textTheme.headline.copyWith(
+                      color: kTextColor.withOpacity(0.5),
+                    ),
               ),
               SizedBox(
-                height: pHeight / 35,
+                height: pHeight / 80,
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Image.asset(
-                  'images/market.png',
-                  width: (MediaQuery.of(context).size.width),
-                  height: pHeight / 2.75,
-                ),
-              ),
-              SizedBox(
-                height: pHeight / 35,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(40.0, 0, 0, 0),
-                child: Text(
-                  'Lets Get \nStarted',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: Color(0xFF900c3f),
-                      fontSize: 40,
-                      fontFamily: 'sf_pro',
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              SizedBox(
-                height: pHeight / 40,
-              ),
-              InkWell(
-                onTap: () async {
-                  FirebaseUser user = await mAuth.currentUser();
-                  //Added the condition to check if the user is already logged in
-                  user == null ? goToLogin() : goToHomePage1();
-                },
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 0),
-                    child: Container(
-                      width: 330,
-                      height: pHeight / 15,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF900c3f),
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(30.0),
+              Positioned(
+                bottom: 30,
+                child: InkWell(
+                  onTap: () async {
+                    FirebaseUser user = await mAuth.currentUser();
+                    //Added the condition to check if the user is already logged in
+                    user == null ? goToLogin() : goToHomePage1();
+                  },
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 30.0),
+                      child: Container(
+                        width: 330,
+                        decoration: BoxDecoration(
+                          color: kSecondaryColor.withOpacity(0.2),
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30.0),
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          "Continue",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: pHeight / 27,
-                              fontFamily: 'sf_pro'),
+                        child: Container(
+                          width: 330,
+                          decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            shape: BoxShape.rectangle,
+                            border: Border.all(color: kBorderColor, width: 1.0),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30.0),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Text(
+                              "CONTINUE",
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .button
+                                  .copyWith(fontSize: 25, color: Colors.white),
+                            ),
+                          ),
                         ),
                       ),
                     ),
