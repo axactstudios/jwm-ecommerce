@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/Classes/User.dart';
 import 'package:jwm2/LoginPages/addressFrame2.dart';
 
@@ -47,29 +48,6 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF900c3f),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: InkWell(
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddressFrame2(
-                            userData: userData,
-                          )),
-                );
-              },
-              child: Icon(
-                Icons.edit,
-                color: Colors.white,
-              ),
-            ),
-          )
-        ],
-      ),
       body: Container(
         child: SafeArea(
           child: Container(
@@ -80,9 +58,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: MediaQuery.of(context).size.height * 0.2629,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Color(0xFF900c3f),
-                      borderRadius:
-                          BorderRadius.only(bottomLeft: Radius.circular(75)),
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(250),
+                          bottomRight: Radius.circular(250)),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -104,7 +83,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 25,
-                                fontFamily: 'sf_pro',
+                                fontFamily: 'Cabin',
                                 letterSpacing: 5),
                           ),
                         ),
@@ -116,207 +95,184 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   userData.name == null
                       ? SpinKitWave(
-                          color: Color(0xFF900c3f),
+                          color: kPrimaryColor,
                         )
                       : SingleChildScrollView(
-                          child: Container(
-                            height: size.height * 0.5,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Color(0xFF900c3f),
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(75),
+                          child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(right: 46.2),
+                                child: Container(
+                                  width: size.width * 0.9,
+                                  decoration:
+                                      BoxDecoration(color: kPrimaryColor),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 20),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.person,
+                                          color: kWhiteColor,
+                                          size: 30,
+                                        ),
+                                        Text(
+                                          userData.name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .title
+                                              .copyWith(
+                                                  color: kWhiteColor,
+                                                  fontSize: 25),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      width: size.width * 0.75,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.person,
-                                              color: Color(0xFF900c3f),
-                                              size: 30,
-                                            ),
-                                            SizedBox(
-                                              width: size.width * 0.1,
-                                            ),
-                                            Container(
-                                              width: size.width * 0.5,
-                                              child: Text(
-                                                userData.name,
-                                                style: TextStyle(
-                                                    color: Color(0xFF900c3f),
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: 'sf_pro'),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      width: size.width * 0.75,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.phone,
-                                              color: Color(0xFF900c3f),
-                                              size: 30,
-                                            ),
-                                            SizedBox(
-                                              width: size.width * 0.1,
-                                            ),
-                                            Container(
-                                              width: size.width * 0.5,
-                                              child: Text(
-                                                userData.phNo,
-                                                style: TextStyle(
-                                                    color: Color(0xFF900c3f),
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: 'sf_pro'),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      width: size.width * 0.75,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.home,
-                                              color: Color(0xFF900c3f),
-                                              size: 30,
-                                            ),
-                                            SizedBox(
-                                              width: size.width * 0.1,
-                                            ),
-                                            Container(
-                                              width: size.width * 0.5,
-                                              child: Text(
-                                                userData.add1,
-                                                style: TextStyle(
-                                                    color: Color(0xFF900c3f),
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: 'sf_pro'),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      width: size.width * 0.75,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.location_city,
-                                              color: Color(0xFF900c3f),
-                                              size: 30,
-                                            ),
-                                            SizedBox(
-                                              width: size.width * 0.1,
-                                            ),
-                                            Container(
-                                              width: size.width * 0.5,
-                                              child: Text(
-                                                userData.add2,
-                                                style: TextStyle(
-                                                    color: Color(0xFF900c3f),
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: 'sf_pro'),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      width: size.width * 0.75,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.location_on,
-                                              color: Color(0xFF900c3f),
-                                              size: 30,
-                                            ),
-                                            SizedBox(
-                                              width: size.width * 0.1,
-                                            ),
-                                            Container(
-                                              width: size.width * 0.5,
-                                              child: Text(
-                                                userData.pin,
-                                                style: TextStyle(
-                                                    color: Color(0xFF900c3f),
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: 'sf_pro'),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              SizedBox(
+                                height: 25.0,
                               ),
-                            ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 55),
+                                child: Container(
+                                  width: size.width * 0.9,
+                                  decoration:
+                                      BoxDecoration(color: kPrimaryColor),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 60, vertical: 15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.phone,
+                                          color: kWhiteColor,
+                                          size: 30,
+                                        ),
+                                        Text(
+                                          userData.phNo,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .title
+                                              .copyWith(
+                                                  color: kWhiteColor,
+                                                  fontSize: 25),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 25.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 46.2),
+                                child: Container(
+                                  width: size.width * 0.9,
+                                  decoration:
+                                      BoxDecoration(color: kPrimaryColor),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 20),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.home,
+                                          color: kWhiteColor,
+                                          size: 30,
+                                        ),
+                                        Text(
+                                          userData.add1,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .title
+                                              .copyWith(
+                                                  color: kWhiteColor,
+                                                  fontSize: 25),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 25.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 55),
+                                child: Container(
+                                  width: size.width * 0.9,
+                                  decoration:
+                                      BoxDecoration(color: kPrimaryColor),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 60, vertical: 15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.location_city,
+                                          color: kWhiteColor,
+                                          size: 30,
+                                        ),
+                                        Text(
+                                          userData.add2,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .title
+                                              .copyWith(
+                                                  color: kWhiteColor,
+                                                  fontSize: 25),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 25.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 46.2),
+                                child: Container(
+                                  width: size.width * 0.9,
+                                  decoration:
+                                      BoxDecoration(color: kPrimaryColor),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 20),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.location_on,
+                                          color: kWhiteColor,
+                                          size: 30,
+                                        ),
+                                        Text(
+                                          userData.pin,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .title
+                                              .copyWith(
+                                                  color: kWhiteColor,
+                                                  fontSize: 25),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                 ],
