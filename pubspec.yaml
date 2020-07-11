@@ -42,6 +42,7 @@ dependencies:
   flutter_email_sender: ^3.0.1
   image_picker: ^0.6.7+3
   flutter_open_whatsapp: ^0.1.2
+  flutter_svg:
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +65,14 @@ flutter:
     - family: Varela_Round
       fonts:
         - asset: fonts/Varela_Round/VarelaRound-Regular.ttf
+    - family : Cabin
+      fonts:
+        - asset: assets/fonts/Cabin-Bold.ttf
+        - asset: assets/fonts/Cabin-Medium.ttf
+        - asset: assets/fonts/Cabin-Regular.ttf
+        - asset: assets/fonts/Cabin-Italic.ttf
+        - asset: assets/fonts/Cabin-SemiBold.ttf
+
 
 
   # To add assets to your application, add an assets section, like this:
