@@ -68,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: <Widget>[
                         Container(
                           child: Icon(
-                            Icons.person,
+                            Icons.account_circle,
                             color: Colors.white,
                             size: 150,
                           ),
