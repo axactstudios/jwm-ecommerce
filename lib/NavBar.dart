@@ -1,4 +1,6 @@
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:jumping_bottom_nav_bar/jumping_bottom_nav_bar.dart';
 import 'package:jwm2/Classes/Cart.dart';
@@ -7,6 +9,8 @@ import 'package:jwm2/Drawer/MainHome.dart';
 import 'package:jwm2/OtherPages/CartPage.dart';
 import 'package:jwm2/OtherPages/OrdersPage.dart';
 import 'package:jwm2/OtherPages/ProfilePage.dart';
+
+import 'Classes/Orders.dart';
 
 class NavBar extends StatefulWidget {
   @override

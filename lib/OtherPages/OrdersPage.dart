@@ -2,23 +2,67 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/Classes/Orders.dart';
 
 class OrdersPage extends StatefulWidget {
-  List<Orders> pastOrders = [];
-  List<Orders> ongoingOrders = [];
-
-  OrdersPage({this.ongoingOrders, this.pastOrders});
-
   @override
   _OrdersPageState createState() => _OrdersPageState();
 }
 
 class _OrdersPageState extends State<OrdersPage> {
-//  @override
-//  void initState() {
-//    getOrders();
-//  }
+  @override
+  void initState() {
+    getOrders();
+  }
+
+  List<Orders> pastOrders = [];
+  List<Orders> ongoingOrders = [];
+  FirebaseAuth mAuth = FirebaseAuth.instance;
+
+  getOrders() async {
+    pastOrders.clear();
+    ongoingOrders.clear();
+    final FirebaseUser user = await mAuth.currentUser();
+    DatabaseReference orderRef =
+        FirebaseDatabase.instance.reference().child('Orders').child(user.uid);
+    orderRef.once().then((DataSnapshot snapshot) async {
+      Map<dynamic, dynamic> values = await snapshot.value;
+      values.forEach((key, values) async {
+        Orders newOrder = Orders();
+        newOrder.orderAmount = values['orderAmount'];
+        print(newOrder.orderAmount);
+        newOrder.itemsName = List<String>.from(values['itemsName']);
+        newOrder.itemsQty = List<int>.from(values['itemsQty']);
+        newOrder.dateTime = values['DateTime'];
+        print(newOrder.dateTime);
+        newOrder.completedTime = values['CompletedTime'];
+        print(newOrder.completedTime);
+        newOrder.shippedTime = values['ShippedTime'];
+        newOrder.status = values['Status'];
+        print(newOrder.status);
+        print(newOrder.shippedTime);
+        print(newOrder.itemsQty);
+        print(newOrder.itemsName);
+        if (values['isCompleted'] == false) {
+          print('Ongoing');
+          ongoingOrders.add(newOrder);
+        } else {
+          print('Past');
+          pastOrders.add(newOrder);
+        }
+
+        setState(() {
+          pastOrders;
+          ongoingOrders;
+          print('An order fetched');
+        });
+      });
+    });
+
+    print(ongoingOrders.length);
+    print(pastOrders.length);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +70,6 @@ class _OrdersPageState extends State<OrdersPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            'Your Orders',
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                fontFamily: 'sf_pro'),
-          ),
-          backgroundColor: Color(0xFF900c3f),
           bottom: TabBar(
             tabs: <Widget>[
               Tab(
@@ -55,7 +90,7 @@ class _OrdersPageState extends State<OrdersPage> {
         body: TabBarView(
           physics: ScrollPhysics(),
           children: <Widget>[
-            widget.ongoingOrders.length == 0
+            ongoingOrders.length == 0
                 ? SingleChildScrollView(
                     child: Container(
                       height: MediaQuery.of(context).size.height,
@@ -67,15 +102,15 @@ class _OrdersPageState extends State<OrdersPage> {
                 : ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    itemCount: widget.ongoingOrders.length,
+                    itemCount: ongoingOrders.length,
                     itemBuilder: (context, index) {
-                      var item = widget.ongoingOrders[index];
+                      var item = ongoingOrders[index];
                       return Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Container(
-                          height: 400,
+                          height: 350,
                           decoration: BoxDecoration(
-                            color: Color(0xFF900c3f),
+                            color: kPrimaryColor,
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -89,7 +124,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
-                                      fontFamily: 'sf_pro'),
+                                      fontFamily: 'Cabin'),
                                 ),
                               ),
                               Padding(
@@ -104,7 +139,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                           color: Colors.white,
                                           fontWeight: FontWeight.w400,
                                           fontSize: 16,
-                                          fontFamily: 'sf_pro'),
+                                          fontFamily: 'Cabin'),
                                     ),
                                     Text(
                                       'Quantity',
@@ -112,7 +147,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                           color: Colors.white,
                                           fontWeight: FontWeight.w400,
                                           fontSize: 16,
-                                          fontFamily: 'sf_pro'),
+                                          fontFamily: 'Cabin'),
                                     )
                                   ],
                                 ),
@@ -120,7 +155,7 @@ class _OrdersPageState extends State<OrdersPage> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Container(
-                                  height: 150,
+                                  height: 100,
                                   child: ListView.builder(
                                       shrinkWrap: true,
                                       scrollDirection: Axis.vertical,
@@ -136,7 +171,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 14,
-                                                  fontFamily: 'sf_pro'),
+                                                  fontFamily: 'Cabin'),
                                             ),
                                             Text(
                                               item.itemsQty[index].toString(),
@@ -144,7 +179,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 14,
-                                                  fontFamily: 'sf_pro'),
+                                                  fontFamily: 'Cabin'),
                                             )
                                           ],
                                         );
@@ -173,7 +208,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 16,
-                                              fontFamily: 'sf_pro'),
+                                              fontFamily: 'Cabin'),
                                         ),
                                         Text(
                                           ' ${item.status}',
@@ -181,7 +216,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 16,
-                                              fontFamily: 'sf_pro'),
+                                              fontFamily: 'Cabin'),
                                         )
                                       ],
                                     ),
@@ -195,7 +230,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 16,
-                                              fontFamily: 'sf_pro'),
+                                              fontFamily: 'Cabin'),
                                         ),
                                         Text(
                                           ' ${item.dateTime}',
@@ -203,7 +238,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 16,
-                                              fontFamily: 'sf_pro'),
+                                              fontFamily: 'Cabin'),
                                         )
                                       ],
                                     ),
@@ -217,7 +252,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 16,
-                                              fontFamily: 'sf_pro'),
+                                              fontFamily: 'Cabin'),
                                         ),
                                         Text(
                                           ' ${item.shippedTime}',
@@ -225,7 +260,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 16,
-                                              fontFamily: 'sf_pro'),
+                                              fontFamily: 'Cabin'),
                                         )
                                       ],
                                     ),
@@ -239,7 +274,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 16,
-                                              fontFamily: 'sf_pro'),
+                                              fontFamily: 'Cabin'),
                                         ),
                                         Text(
                                           ' ${item.completedTime}',
@@ -247,7 +282,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 16,
-                                              fontFamily: 'sf_pro'),
+                                              fontFamily: 'Cabin'),
                                         )
                                       ],
                                     ),
@@ -261,7 +296,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 16,
-                                              fontFamily: 'sf_pro'),
+                                              fontFamily: 'Cabin'),
                                         ),
                                         Text(
                                           'Rs. ${item.orderAmount.toString()}',
@@ -269,7 +304,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 16,
-                                              fontFamily: 'sf_pro'),
+                                              fontFamily: 'Cabin'),
                                         )
                                       ],
                                     ),
@@ -281,7 +316,7 @@ class _OrdersPageState extends State<OrdersPage> {
                         ),
                       );
                     }),
-            widget.pastOrders.length == 0
+            pastOrders.length == 0
                 ? SingleChildScrollView(
                     child: Container(
                       height: MediaQuery.of(context).size.height,
@@ -293,15 +328,15 @@ class _OrdersPageState extends State<OrdersPage> {
                 : ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    itemCount: widget.pastOrders.length,
+                    itemCount: pastOrders.length,
                     itemBuilder: (context, index) {
-                      var item = widget.pastOrders[index];
+                      var item = pastOrders[index];
                       return Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Container(
-                          height: 400,
+                          height: 350,
                           decoration: BoxDecoration(
-                            color: Color(0xFF900c3f),
+                            color: kPrimaryColor,
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -315,7 +350,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
-                                      fontFamily: 'sf_pro'),
+                                      fontFamily: 'Cabin'),
                                 ),
                               ),
                               Padding(
@@ -330,7 +365,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                           color: Colors.white,
                                           fontWeight: FontWeight.w400,
                                           fontSize: 16,
-                                          fontFamily: 'sf_pro'),
+                                          fontFamily: 'Cabin'),
                                     ),
                                     Text(
                                       'Quantity',
@@ -338,13 +373,13 @@ class _OrdersPageState extends State<OrdersPage> {
                                           color: Colors.white,
                                           fontWeight: FontWeight.w400,
                                           fontSize: 16,
-                                          fontFamily: 'sf_pro'),
+                                          fontFamily: 'Cabin'),
                                     )
                                   ],
                                 ),
                               ),
                               Container(
-                                height: 150,
+                                height: 100,
                                 child: Padding(
                                   padding: const EdgeInsets.all(12.0),
                                   child: ListView.builder(
@@ -362,7 +397,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 14,
-                                                  fontFamily: 'sf_pro'),
+                                                  fontFamily: 'Cabin'),
                                             ),
                                             Text(
                                               item.itemsQty[index].toString(),
@@ -370,7 +405,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 14,
-                                                  fontFamily: 'sf_pro'),
+                                                  fontFamily: 'Cabin'),
                                             )
                                           ],
                                         );
@@ -401,7 +436,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 16,
-                                                fontFamily: 'sf_pro'),
+                                                fontFamily: 'Cabin'),
                                           ),
                                           Text(
                                             ' ${item.status}',
@@ -409,7 +444,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 16,
-                                                fontFamily: 'sf_pro'),
+                                                fontFamily: 'Cabin'),
                                           )
                                         ],
                                       ),
@@ -423,7 +458,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 16,
-                                                fontFamily: 'sf_pro'),
+                                                fontFamily: 'Cabin'),
                                           ),
                                           Text(
                                             ' ${item.dateTime}',
@@ -431,7 +466,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 16,
-                                                fontFamily: 'sf_pro'),
+                                                fontFamily: 'Cabin'),
                                           )
                                         ],
                                       ),
@@ -445,7 +480,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 16,
-                                                fontFamily: 'sf_pro'),
+                                                fontFamily: 'Cabin'),
                                           ),
                                           Text(
                                             ' ${item.shippedTime}',
@@ -453,7 +488,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 16,
-                                                fontFamily: 'sf_pro'),
+                                                fontFamily: 'Cabin'),
                                           )
                                         ],
                                       ),
@@ -467,7 +502,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 16,
-                                                fontFamily: 'sf_pro'),
+                                                fontFamily: 'Cabin'),
                                           ),
                                           Text(
                                             ' ${item.completedTime}',
@@ -475,7 +510,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 16,
-                                                fontFamily: 'sf_pro'),
+                                                fontFamily: 'Cabin'),
                                           )
                                         ],
                                       ),
@@ -489,7 +524,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 16,
-                                                fontFamily: 'sf_pro'),
+                                                fontFamily: 'Cabin'),
                                           ),
                                           Text(
                                             'Rs. ${item.orderAmount.toString()}',
@@ -497,7 +532,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 16,
-                                                fontFamily: 'sf_pro'),
+                                                fontFamily: 'Cabin'),
                                           )
                                         ],
                                       ),

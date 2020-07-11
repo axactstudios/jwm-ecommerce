@@ -1,6 +1,6 @@
 class Orders {
   bool isCompleted;
-  int orderAmount;
+  double orderAmount;
   List<String> itemsName;
   List<int> itemsQty;
   String dateTime, completedTime, shippedTime, status;
