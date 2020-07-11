@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jwm2/Classes/Cart.dart';
+import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/Classes/DatabaseHelper.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:intl/intl.dart';
@@ -57,334 +58,356 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     double pWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Grocery Man',
-          style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              fontFamily: 'sf_pro'),
-        ),
-        backgroundColor: Color(0xFF900c3f),
-      ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: ListView.builder(
-                  itemCount: cartItems.length,
-                  itemBuilder: (context, index) {
-                    var item = cartItems[index];
-                    return Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Color(0xFF900c3f),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            children: <Widget>[
-                              Container(
-                                width: pWidth * 0.2,
-                                child: Image.network(
-                                  item.price,
-                                  height: 70,
-                                  width: 70,
-                                ),
-                              ),
-                              Container(
-                                width: pWidth * 0.4,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        item.productName,
-                                        style: TextStyle(
-                                            fontFamily: 'sf_pro',
-                                            color: Colors.white,
-                                            fontSize: 14),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        'Price : ${item.imgUrl}',
-                                        style: TextStyle(
-                                            fontFamily: 'sf_pro',
-                                            color: Colors.white,
-                                            fontSize: 14),
-                                      ),
-                                    ],
+      body: SafeArea(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: ListView.builder(
+                    itemCount: cartItems.length,
+                    itemBuilder: (context, index) {
+                      var item = cartItems[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: kWhiteColor,
+                              border:
+                                  Border.all(color: kPrimaryColor, width: 2.0),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: kPrimaryColor,
+                                    blurRadius: 2.0,
+                                    spreadRadius: 0.1)
+                              ],
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  width: pWidth * 0.2,
+                                  child: Image.network(
+                                    item.imgUrl,
+                                    height: 70,
+                                    width: 70,
                                   ),
                                 ),
-                              ),
-                              Container(
-                                width: pWidth * 0.3,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    InkWell(
-                                      onTap: () {
-                                        if (item.qty == 1) {
-                                          removeItem(item.productName);
-                                        } else {
-                                          newQty = item.qty - 1;
+                                Container(
+                                  width: pWidth * 0.4,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          item.productName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .title
+                                              .copyWith(
+                                                  color: kTextColor
+                                                      .withOpacity(0.85),
+                                                  fontSize: 18.0),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          'Price : ${item.price}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .button
+                                              .copyWith(
+                                                color: kTextColor
+                                                    .withOpacity(0.65),
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: pWidth * 0.3,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      InkWell(
+                                        onTap: () {
+                                          if (item.qty == 1) {
+                                            removeItem(item.productName);
+                                          } else {
+                                            newQty = item.qty - 1;
+                                            updateItem(
+                                                id: item.id,
+                                                name: item.productName,
+                                                imgUrl: item.imgUrl,
+                                                price: item.price,
+                                                qty: newQty);
+                                          }
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: kPrimaryColor,
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                          ),
+                                          child: Icon(
+                                            Icons.indeterminate_check_box,
+                                            color: Colors.white,
+                                            size: pWidth * 0.07,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(3),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                            item.qty.toString(),
+                                            style: TextStyle(
+                                                fontFamily: 'Cabin',
+                                                color: Colors.black,
+                                                fontSize: 17),
+                                          ),
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          newQty = item.qty + 1;
                                           updateItem(
                                               id: item.id,
                                               name: item.productName,
                                               imgUrl: item.imgUrl,
                                               price: item.price,
                                               qty: newQty);
-                                        }
-                                      },
-                                      child: Icon(
-                                        Icons.indeterminate_check_box,
-                                        color: Colors.white,
-                                        size: pWidth * 0.07,
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Text(
-                                          item.qty.toString(),
-                                          style: TextStyle(
-                                              fontFamily: 'sf_pro',
-                                              color: Colors.black,
-                                              fontSize: 17),
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: kPrimaryColor,
+                                            borderRadius:
+                                                BorderRadius.circular(3),
+                                          ),
+                                          child: Icon(
+                                            Icons.add_box,
+                                            color: Colors.white,
+                                            size: pWidth * 0.07,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        newQty = item.qty + 1;
-                                        updateItem(
-                                            id: item.id,
-                                            name: item.productName,
-                                            imgUrl: item.imgUrl,
-                                            price: item.price,
-                                            qty: newQty);
-                                      },
-                                      child: Icon(
-                                        Icons.add_box,
-                                        color: Colors.white,
-                                        size: pWidth * 0.07,
+                                      InkWell(
+                                        onTap: () {
+                                          removeItem(item.productName);
+                                        },
+                                        child: Icon(
+                                          Icons.delete,
+                                          color: kPrimaryColor,
+                                          size: pWidth * 0.07,
+                                        ),
                                       ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        removeItem(item.productName);
-                                      },
-                                      child: Icon(
-                                        Icons.delete,
-                                        color: Colors.white,
-                                        size: pWidth * 0.07,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height / 4,
-              decoration: BoxDecoration(
-                color: Color(0xFF900c3f),
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(15),
-                  topLeft: Radius.circular(15),
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Container(
-                          width: pWidth * 0.5,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              FittedBox(
-                                child: Text(
-                                  "Order Total = Rs. ${(totalAmount() + (0.18 * totalAmount()) + 40).toStringAsFixed(2)}  ",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'sf_pro',
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              40),
-                                ),
-                              ),
-                              FittedBox(
-                                child: Text(
-                                  "Products Total = Rs. ${totalAmount()}",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'sf_pro',
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              60),
-                                ),
-                              ),
-                              FittedBox(
-                                child: Text(
-                                  "GST(18%) = Rs. ${(totalAmount() * 0.18).toStringAsFixed(2)}",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'sf_pro',
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              60),
-                                ),
-                              ),
-                              FittedBox(
-                                child: Text(
-                                  "Delivery Charges = Rs. 40.0",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'sf_pro',
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              60),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.1,
-                        ),
-                        Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                onOrderPlaced();
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15),
+                                    ],
                                   ),
-                                  color: Colors.white,
-                                ),
-                                width:
-                                    MediaQuery.of(context).size.width * 0.315,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height / 4.8,
+                decoration: BoxDecoration(
+                  color: kPrimaryColor,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(15),
+                    topLeft: Radius.circular(15),
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Container(
+                            width: pWidth * 0.5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                FittedBox(
                                   child: Text(
-                                    "Proceed for COD",
+                                    "Order Total = Rs. ${(totalAmount() + (0.18 * totalAmount()) + 40).toStringAsFixed(2)}  ",
                                     style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'sf_pro',
+                                        color: Colors.white,
+                                        fontFamily: 'Cabin',
                                         fontSize:
                                             MediaQuery.of(context).size.height /
-                                                50,
-                                        color: Color(0xFF900c3f)),
+                                                40),
                                   ),
                                 ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height / 70,
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                await onOrderPlaced();
-                                openCheckout();
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15),
+                                FittedBox(
+                                  child: Text(
+                                    "Products Total = Rs. ${totalAmount()}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Cabin',
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                60),
                                   ),
-                                  color: Colors.white,
                                 ),
-                                width:
-                                    MediaQuery.of(context).size.width * 0.315,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 7),
-                                  child: Center(
+                                FittedBox(
+                                  child: Text(
+                                    "GST(18%) = Rs. ${(totalAmount() * 0.18).toStringAsFixed(2)}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Cabin',
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                60),
+                                  ),
+                                ),
+                                FittedBox(
+                                  child: Text(
+                                    "Delivery Charges = Rs. 40.0",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Cabin',
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                60),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.1,
+                          ),
+                          Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  onOrderPlaced();
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.315,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
                                     child: Text(
-                                      "Pay online",
+                                      "PROCEED FOR COD",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontFamily: 'sf_pro',
+                                          fontFamily: 'Cabin',
                                           fontSize: MediaQuery.of(context)
                                                   .size
                                                   .height /
-                                              45,
-                                          color: Color(0xFF900c3f)),
+                                              65,
+                                          color: kPrimaryColor),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 40,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        width: MediaQuery.of(context).size.height - 20,
-                        height: MediaQuery.of(context).size.height / 18,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(15),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height / 70,
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  await onOrderPlaced();
+                                  openCheckout();
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.315,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 7),
+                                    child: Center(
+                                      child: Text(
+                                        "PAY ONLINE",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Cabin',
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                55,
+                                            color: kPrimaryColor),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          color: Colors.white,
-                        ),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            child: Text(
-                              "Check address details",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'sf_pro',
-                                  fontSize:
-                                      MediaQuery.of(context).size.height / 60,
-                                  color: Color(0xFF900c3f)),
+                        ],
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 40,
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          width: MediaQuery.of(context).size.height - 20,
+                          height: MediaQuery.of(context).size.height / 18,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                            color: Colors.white,
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Text(
+                                "CHECK ADDRESS DETAILS",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Cabin',
+                                    fontSize:
+                                        MediaQuery.of(context).size.height / 50,
+                                    color: kPrimaryColor),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -429,7 +452,7 @@ class _CartPageState extends State<CartPage> {
     double sum = 0;
     getAllItems();
     for (int i = 0; i < cartItems.length; i++) {
-      sum += (double.parse(cartItems[i].imgUrl) * cartItems[i].qty);
+      sum += (double.parse(cartItems[i].price) * cartItems[i].qty);
     }
     return sum;
   }

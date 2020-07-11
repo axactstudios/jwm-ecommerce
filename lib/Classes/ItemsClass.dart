@@ -1,4 +1,4 @@
 class Items {
-  String name, price, imageUrl, quantity;
-  Items(this.name, this.price, this.imageUrl, this.quantity);
+  String name, imageUrl, price, quantity;
+  Items({this.name, this.price, this.imageUrl, this.quantity});
 }

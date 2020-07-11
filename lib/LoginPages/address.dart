@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/Drawer/MainHome.dart';
+import 'package:jwm2/NavBar.dart';
 
 class Address extends StatefulWidget {
   final String phno;
@@ -163,7 +164,7 @@ class _AddressState extends State<Address> {
                   });
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => MainHome()),
+                    MaterialPageRoute(builder: (context) => NavBar()),
                   );
                 }
               },

@@ -41,7 +41,7 @@ class DatabaseHelper {
             $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
             $columnProductName TEXT NOT NULL,
             $columnImageUrl TEXT NOT NULL,
-            $columnPrice TEXT NIT NULL,
+            $columnPrice TEXT NOT NULL,
             $columnQuantity INTEGER NOT NULL
           )
           ''');
