@@ -43,6 +43,8 @@ class _CartPageState extends State<CartPage> {
     // Assuming that the number of rows is the id for the last row.
     final rowsDeleted = await dbHelper.delete(name);
     getAllItems();
+    Fluttertoast.showToast(
+        msg: 'Removed from cart', toastLength: Toast.LENGTH_SHORT);
   }
 
   @override
