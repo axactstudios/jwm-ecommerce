@@ -173,7 +173,7 @@ class _MainHomeState extends State<MainHome> {
                                 width: 20.0,
                               ),
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.38,
+                                width: MediaQuery.of(context).size.width * 0.5,
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -231,130 +231,34 @@ class _MainHomeState extends State<MainHome> {
                               SizedBox(
                                 width: 15.0,
                               ),
-                              cartItem == null
-                                  ? InkWell(
-                                      onTap: () {
-                                        _query(item.name);
-                                        addToCart(
-                                            name: item.name,
-                                            imgUrl: item.imageUrl.toString(),
-                                            price: item.price.toString(),
-                                            qty: 1);
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: kPrimaryColor,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(6.0),
-                                          child: Container(
-                                            child: Text(
-                                              'Add to cart',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .button
-                                                  .copyWith(color: kWhiteColor),
-                                            ),
-                                          ),
-                                        ),
+                              InkWell(
+                                onTap: () {
+                                  _query(item.name);
+                                  addToCart(
+                                      name: item.name,
+                                      imgUrl: item.imageUrl.toString(),
+                                      price: item.price.toString(),
+                                      qty: 1);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: kPrimaryColor,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Container(
+                                      child: Text(
+                                        'Add to cart',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .button
+                                            .copyWith(color: kWhiteColor),
                                       ),
-                                    )
-                                  : Center(
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.3,
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              18, 0, 0, 0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
-                                              InkWell(
-                                                onTap: () {
-                                                  if (cartItem.qty == 1) {
-                                                    removeItem(
-                                                        cartItem.productName);
-                                                  } else {
-                                                    newQty = cartItem.qty - 1;
-                                                    updateItem(
-                                                        id: cartItem.id,
-                                                        name: cartItem
-                                                            .productName,
-                                                        imgUrl: cartItem.imgUrl,
-                                                        price: cartItem.price,
-                                                        qty: newQty);
-                                                  }
-                                                },
-                                                child: Icon(
-                                                  Icons.indeterminate_check_box,
-                                                  color: kPrimaryColor,
-                                                  size: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.07,
-                                                ),
-                                              ),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(5.0),
-                                                  child: Text(
-                                                    cartItem.qty.toString(),
-                                                    style: TextStyle(
-                                                        fontFamily: 'Cabin',
-                                                        color: Colors.black,
-                                                        fontSize: 17),
-                                                  ),
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  newQty = cartItem.qty + 1;
-                                                  updateItem(
-                                                      id: cartItem.id,
-                                                      name:
-                                                          cartItem.productName,
-                                                      imgUrl: cartItem.imgUrl,
-                                                      price: cartItem.price,
-                                                      qty: newQty);
-                                                },
-                                                child: Icon(
-                                                  Icons.add_box,
-                                                  color: kPrimaryColor,
-                                                  size: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.07,
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  removeItem(
-                                                      cartItem.productName);
-                                                },
-                                                child: Icon(
-                                                  Icons.delete,
-                                                  color: kPrimaryColor,
-                                                  size: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.07,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    )
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -420,13 +324,15 @@ class _MainHomeState extends State<MainHome> {
     getCartLength();
   }
 
-  void _query(String name) async {
+  Future<bool> _query(String name) async {
+    Cart cartItem;
     final allRows = await dbHelper.queryRows(name);
     allRows.forEach((row) => cartItem = Cart.fromMap(row));
-    setState(() {
-      cartItem;
-      print('Updated');
-    });
+    if (cartItem == null) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   void updateItem(
@@ -438,7 +344,6 @@ class _MainHomeState extends State<MainHome> {
     setState(() {
       _query(item.productName);
       print('Updated');
-      cartItem;
     });
     getCartLength();
   }
@@ -446,10 +351,8 @@ class _MainHomeState extends State<MainHome> {
   void removeItem(String name) async {
     // Assuming that the number of rows is the id for the last row.
     final rowsDeleted = await dbHelper.delete(name);
-    _query(name);
     setState(() {
       print('Updated');
-      cartItem;
     });
     getCartLength();
   }
