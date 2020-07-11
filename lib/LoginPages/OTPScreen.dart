@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/LoginPages/addressFrame.dart';
 import 'package:jwm2/OtherPages/SignedIn.dart';
 
@@ -41,9 +43,9 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF900c3f),
+      backgroundColor: kWhiteColor,
       appBar: AppBar(
-          backgroundColor: Color(0xFF900c3f),
+          backgroundColor: kWhiteColor,
           elevation: 0.0,
           leading: IconButton(
             icon: Icon(
@@ -61,31 +63,27 @@ class _OTPScreenState extends State<OTPScreen> {
           children: <Widget>[
             Container(
               padding: EdgeInsets.only(left: 16.0, bottom: 16, top: 4),
-              color: Color(0xFF900c3f),
+              color: kWhiteColor,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Image.asset(
-                    'images/fruits.png',
-                    scale: 2,
+                  SvgPicture.asset(
+                    'images/loginjwm3.svg',
+                    height: 250,
                   ),
                   Text(
                     "Buy Fresh Daily, Eat Fresh Daily",
-                    style: TextStyle(
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontFamily: 'sf_pro'),
+                    style: Theme.of(context).textTheme.title.copyWith(
+                        color: kTextColor.withOpacity(0.75), fontSize: 25.0),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(5, 10, 16, 0),
                     child: Text(
                       "OTP sent to ${widget.mobileNumber}",
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          fontFamily: 'sf_pro',
-                          color: Colors.white),
+                      style: Theme.of(context).textTheme.body1.copyWith(
+                            color: kTextColor.withOpacity(0.6),
+                          ),
                     ),
                   ),
                 ],
@@ -93,56 +91,65 @@ class _OTPScreenState extends State<OTPScreen> {
             ),
             Expanded(
               child: Container(
-                color: Color(0xFF900c3f),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: PinInputTextField(
-                        pinLength: 6,
-                        decoration: _pinDecoration,
-                        controller: _pinEditingController,
-                        autoFocus: true,
-                        textInputAction: TextInputAction.done,
-                        onSubmit: (pin) {
-                          if (pin.length == 6) {
-                            _onFormSubmitted();
-                          } else {
-                            showToast("Invalid OTP", Colors.red);
-                          }
-                        },
+                decoration: BoxDecoration(
+                    color: kPrimaryColor,
+                    borderRadius: BorderRadius.circular(25.0),
+                    border: Border.all(color: kBorderColor, width: 2.0)),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: PinInputTextField(
+                          pinLength: 6,
+                          decoration: _pinDecoration,
+                          controller: _pinEditingController,
+                          autoFocus: true,
+                          textInputAction: TextInputAction.done,
+                          onSubmit: (pin) {
+                            if (pin.length == 6) {
+                              _onFormSubmitted();
+                            } else {
+                              showToast("Invalid OTP", Colors.red);
+                            }
+                          },
+                        ),
                       ),
-                    ),
-                    Container(
-                      padding:
-                          const EdgeInsets.only(top: 10, left: 16, right: 16),
-                      child: Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          child: RaisedButton(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0)),
-                            child: Text(
-                              "ENTER OTP",
-                              style: TextStyle(
-                                  color: Color(0xFF900c3f),
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold),
+                      Container(
+                        padding:
+                            const EdgeInsets.only(top: 10, left: 16, right: 16),
+                        child: Center(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            child: RaisedButton(
+                              color: kPrimaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                side:
+                                    BorderSide(color: kBorderColor, width: 2.0),
+                              ),
+                              child: Text(
+                                "ENTER OTP",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .button
+                                    .copyWith(fontSize: 20.0),
+                              ),
+                              onPressed: () {
+                                if (_pinEditingController.text.length == 6) {
+                                  _onFormSubmitted();
+                                } else {
+                                  showToast("Invalid OTP", Colors.white);
+                                }
+                              },
+                              padding: EdgeInsets.all(16.0),
                             ),
-                            onPressed: () {
-                              if (_pinEditingController.text.length == 6) {
-                                _onFormSubmitted();
-                              } else {
-                                showToast("Invalid OTP", Colors.white);
-                              }
-                            },
-                            padding: EdgeInsets.all(16.0),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
