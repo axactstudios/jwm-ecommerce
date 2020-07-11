@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:getflutter/components/carousel/gf_carousel.dart';
 import 'package:jwm2/Classes/Cart.dart';
 import 'package:jwm2/Classes/Constants.dart';
@@ -47,7 +48,8 @@ class _MainHomeState extends State<MainHome> {
             name: DATA[key]['Name'],
             price: DATA[key]['Price'],
             quantity: DATA[key]['Quantity'],
-            imageUrl: DATA[key]['ImageUrl']);
+            imageUrl: DATA[key]['ImageUrl'],
+            isCart: false);
         items.add(c);
       }
       setState(() {
@@ -143,6 +145,13 @@ class _MainHomeState extends State<MainHome> {
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     var item = items[index];
+                    _query(item.name).then((value) {
+                      item.isCart = value;
+                      print('${item.name} ${item.isCart}');
+                      setState(() {
+                        item.isCart;
+                      });
+                    });
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
@@ -173,7 +182,7 @@ class _MainHomeState extends State<MainHome> {
                                 width: 20.0,
                               ),
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.5,
+                                width: MediaQuery.of(context).size.width * 0.45,
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -231,34 +240,61 @@ class _MainHomeState extends State<MainHome> {
                               SizedBox(
                                 width: 15.0,
                               ),
-                              InkWell(
-                                onTap: () {
-                                  _query(item.name);
-                                  addToCart(
-                                      name: item.name,
-                                      imgUrl: item.imageUrl.toString(),
-                                      price: item.price.toString(),
-                                      qty: 1);
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: kPrimaryColor,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: Container(
-                                      child: Text(
-                                        'Add to cart',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .button
-                                            .copyWith(color: kWhiteColor),
+                              item.isCart == true
+                                  ? InkWell(
+                                      onTap: null,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.blueGrey,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(6.0),
+                                          child: Container(
+                                            child: Text(
+                                              'Already in cart',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .button
+                                                  .copyWith(color: kWhiteColor),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : InkWell(
+                                      onTap: () {
+                                        _query(item.name);
+                                        addToCart(
+                                            name: item.name,
+                                            imgUrl: item.imageUrl.toString(),
+                                            price: item.price.toString(),
+                                            qty: 1);
+                                        setState(() {
+                                          item.isCart = true;
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: kPrimaryColor,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(6.0),
+                                          child: Container(
+                                            child: Text(
+                                              'Add to cart',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .button
+                                                  .copyWith(color: kWhiteColor),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
                         ),
@@ -321,6 +357,8 @@ class _MainHomeState extends State<MainHome> {
     };
     Cart item = Cart.fromMap(row);
     final id = await dbHelper.insert(item);
+    Fluttertoast.showToast(
+        msg: 'Added to cart', toastLength: Toast.LENGTH_SHORT);
     getCartLength();
   }
 

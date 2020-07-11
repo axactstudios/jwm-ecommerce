@@ -81,7 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             'PROFILE',
                             style: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.w600,
                                 fontSize: 25,
                                 fontFamily: 'Cabin',
                                 letterSpacing: 5),
