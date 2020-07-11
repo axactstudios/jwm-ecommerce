@@ -196,7 +196,7 @@ class _CartPageState extends State<CartPage> {
                                           decoration: BoxDecoration(
                                             color: kPrimaryColor,
                                             borderRadius:
-                                                BorderRadius.circular(3),
+                                                BorderRadius.circular(6),
                                           ),
                                           child: Icon(
                                             Icons.add_box,
@@ -416,7 +416,7 @@ class _CartPageState extends State<CartPage> {
   Future<void> onOrderPlaced() async {
     List<String> item = [];
     List<int> qty = [];
-    double orderAmount = totalAmount();
+    double orderAmount = (totalAmount() + (0.18 * totalAmount()) + 40);
 
     for (int i = 0; i < cartItems.length; i++) {
       item.add(cartItems[i].productName);
