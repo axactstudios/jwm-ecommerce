@@ -21,28 +21,10 @@ class _MainHomeState extends State<MainHome> {
   Cart cartItem;
   int newQty;
 
-  final List<String> imageList = ['fruits.png', 'market.png', 'vegetable.png'];
-  // ignore: non_constant_identifier_names
-  final List<Items> Fruits = [];
-  // ignore: non_constant_identifier_names
-  final List<Items> Vegetables = [];
-  // ignore: non_constant_identifier_names
-  final List<Items> Dairy = [];
-  // ignore: non_constant_identifier_names
-  final List<Items> Food = [];
-  // ignore: non_constant_identifier_names
-  final List<Items> Bakery = [];
-  // ignore: non_constant_identifier_names
-  final List<Items> Meat = [];
-  // ignore: non_constant_identifier_names
-  final List<Items> Provisions = [];
-  // ignore: non_constant_identifier_names
-  final List<Items> Snacks = [];
-  // ignore: non_constant_identifier_names
-  final List<Items> Garden = [];
+  final List<String> imageList = ['1.png', '2.png', '3.png'];
 
   List<Items> items = [];
-  String category = 'Fruits';
+  String category = 'Food';
 
   void getItemsRef() {
     items.clear();
@@ -62,11 +44,10 @@ class _MainHomeState extends State<MainHome> {
         print(DATA[key]['ImageUrl']);
         print(DATA[key]['Quantity']);
         Items c = new Items(
-          DATA[key]['Name'],
-          DATA[key]['ImageUrl'],
-          DATA[key]['Price'],
-          DATA[key]['Quantity'],
-        );
+            name: DATA[key]['Name'],
+            price: DATA[key]['Price'],
+            quantity: DATA[key]['Quantity'],
+            imageUrl: DATA[key]['ImageUrl']);
         items.add(c);
       }
       setState(() {
@@ -142,15 +123,14 @@ class _MainHomeState extends State<MainHome> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: <Widget>[
-                      categoryCard('Fruits', 'bananas.png', Fruits),
-                      categoryCard('Dairy', 'milk.png', Dairy),
-                      categoryCard('Vegetables', 'vegetable1.png', Vegetables),
-                      categoryCard('Snacks', 'snacks.png', Snacks),
-                      categoryCard('Provisions', 'flour.png', Provisions),
-                      categoryCard('Meat', 'meat.png', Meat),
-                      categoryCard('Bakery', 'bread.png', Bakery),
-                      categoryCard('Garden', 'plant.png', Garden),
-                      categoryCard('Food', 'cutlery.png', Food),
+                      categoryCard('Food', 'food.png'),
+                      categoryCard('Bedding', 'bed.png'),
+                      categoryCard('Bowls', 'bowl.png'),
+                      categoryCard('Bath Items', 'bath.png'),
+                      categoryCard('Collar & Lashes', 'collar.png'),
+                      categoryCard('Hair Care', 'hair.png'),
+                      categoryCard('Tooth Care', 'teeth.png'),
+                      categoryCard('Toys', 'toys.png'),
                     ],
                   ),
                 ),
@@ -182,97 +162,199 @@ class _MainHomeState extends State<MainHome> {
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Image(
-                                image: NetworkImage(item.price),
+                                image: NetworkImage(item.imageUrl),
                                 height: 60,
                                 width: 60,
                               ),
                               SizedBox(
-                                width: 15.0,
+                                width: 20.0,
                               ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        item.name,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .title
-                                            .copyWith(
-                                                color: kTextColor
-                                                    .withOpacity(0.85),
-                                                fontSize: 22.0),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(
-                                            'Quantity : ',
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.38,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.38,
+                                          child: Text(
+                                            item.name,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .body1
+                                                .title
                                                 .copyWith(
                                                     color: kTextColor
-                                                        .withOpacity(0.65),
-                                                    fontSize: 16.0),
+                                                        .withOpacity(0.85),
+                                                    fontSize: 22.0),
                                           ),
-                                          Text(
-                                            item.quantity,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .body1
-                                                .copyWith(
-                                                    color: kTextColor
-                                                        .withOpacity(0.65),
-                                                    fontSize: 16.0),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              'Price : Rs',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .body1
+                                                  .copyWith(
+                                                      color: kTextColor
+                                                          .withOpacity(0.65),
+                                                      fontSize: 16.0),
+                                            ),
+                                            Text(
+                                              item.price,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .body1
+                                                  .copyWith(
+                                                      color: kTextColor
+                                                          .withOpacity(0.65),
+                                                      fontSize: 16.0),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                               SizedBox(
                                 width: 15.0,
                               ),
-                              InkWell(
-                                onTap: () {
-                                  _query(item.name);
-                                  addToCart(
-                                      name: item.name,
-                                      imgUrl: item.imageUrl,
-                                      price: item.price,
-                                      qty: 1);
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: kPrimaryColor,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: Container(
-                                      child: Text(
-                                        'Add to cart',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .button
-                                            .copyWith(color: kWhiteColor),
+                              cartItem == null
+                                  ? InkWell(
+                                      onTap: () {
+                                        _query(item.name);
+                                        addToCart(
+                                            name: item.name,
+                                            imgUrl: item.imageUrl.toString(),
+                                            price: item.price.toString(),
+                                            qty: 1);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: kPrimaryColor,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(6.0),
+                                          child: Container(
+                                            child: Text(
+                                              'Add to cart',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .button
+                                                  .copyWith(color: kWhiteColor),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                                    )
+                                  : Center(
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.3,
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              18, 0, 0, 0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              InkWell(
+                                                onTap: () {
+                                                  if (cartItem.qty == 1) {
+                                                    removeItem(
+                                                        cartItem.productName);
+                                                  } else {
+                                                    newQty = cartItem.qty - 1;
+                                                    updateItem(
+                                                        id: cartItem.id,
+                                                        name: cartItem
+                                                            .productName,
+                                                        imgUrl: cartItem.imgUrl,
+                                                        price: cartItem.price,
+                                                        qty: newQty);
+                                                  }
+                                                },
+                                                child: Icon(
+                                                  Icons.indeterminate_check_box,
+                                                  color: kPrimaryColor,
+                                                  size: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.07,
+                                                ),
+                                              ),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Text(
+                                                    cartItem.qty.toString(),
+                                                    style: TextStyle(
+                                                        fontFamily: 'Cabin',
+                                                        color: Colors.black,
+                                                        fontSize: 17),
+                                                  ),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  newQty = cartItem.qty + 1;
+                                                  updateItem(
+                                                      id: cartItem.id,
+                                                      name:
+                                                          cartItem.productName,
+                                                      imgUrl: cartItem.imgUrl,
+                                                      price: cartItem.price,
+                                                      qty: newQty);
+                                                },
+                                                child: Icon(
+                                                  Icons.add_box,
+                                                  color: kPrimaryColor,
+                                                  size: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.07,
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  removeItem(
+                                                      cartItem.productName);
+                                                },
+                                                child: Icon(
+                                                  Icons.delete,
+                                                  color: kPrimaryColor,
+                                                  size: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.07,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
                             ],
                           ),
                         ),
@@ -288,7 +370,7 @@ class _MainHomeState extends State<MainHome> {
     );
   }
 
-  Widget categoryCard(name, image, List name1) {
+  Widget categoryCard(name, image) {
     return InkWell(
       onTap: () {
         setState(() {
@@ -304,7 +386,7 @@ class _MainHomeState extends State<MainHome> {
           child: Row(
             children: [
               Image.asset(
-                'images/$image',
+                'assets/images/$image',
                 height: 35,
                 width: 35,
               ),

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:jwm2/Classes/Constants.dart';
+import 'package:jwm2/NavBar.dart';
 
 import '../Drawer/MainHome.dart';
 import '../LoginPages/addressFrame.dart';
@@ -48,7 +49,7 @@ class _SignedInState extends State<SignedIn> {
       if (isStored) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => MainHome()),
+          MaterialPageRoute(builder: (context) => NavBar()),
         );
       } else {
         print(widget.phNo);
