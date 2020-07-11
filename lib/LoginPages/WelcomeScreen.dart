@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/LoginPages/PhoneLogin.dart';
+import 'package:jwm2/NavBar.dart';
 
 import '../Drawer/MainHome.dart';
 
@@ -91,11 +92,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             shape: BoxShape.rectangle,
                             border: Border.all(color: kBorderColor, width: 1.0),
                             borderRadius: BorderRadius.all(
-                              Radius.circular(25.0),
+                              Radius.circular(20.0),
                             ),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(16),
+                            padding: EdgeInsets.all(20),
                             child: Text(
                               "CONTINUE",
                               textAlign: TextAlign.center,
@@ -123,7 +124,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void goToHomePage1() {
-    Navigator.push(context, SlideUpRoute(nextPage: MainHome()));
+    Navigator.push(context, SlideUpRoute(nextPage: NavBar()));
   }
 }
 
