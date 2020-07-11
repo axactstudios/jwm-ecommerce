@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/LoginPages/address.dart';
 import 'package:flutter/material.dart';
 
@@ -20,28 +21,28 @@ class _AddressFrameState extends State<AddressFrame> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Color(0xFF900c3f),
+        backgroundColor: kWhiteColor,
         body: SingleChildScrollView(
           child: Center(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: 100,
+                  height: 200,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Text(
                     'Enter Primary Address',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 40.0,
-                        fontFamily: 'sf_pro'),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline
+                        .copyWith(fontSize: 30.0, color: kTextColor),
                   ),
                 ),
                 SizedBox(
-                  height: 25,
+                  height: 60,
                 ),
                 Container(
                   height: 360,
