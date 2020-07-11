@@ -134,139 +134,73 @@ class _MainHomeState extends State<MainHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: NavDrawer(),
-      appBar: AppBar(
-        title: Text(
-          'Grocery Man',
-          style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              fontFamily: 'sf_pro'),
-        ),
-        backgroundColor: Color(0xFF900c3f),
-        actions: <Widget>[
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CartPage()),
-              );
-              getCartLength();
-              setState(() {
-                length;
-              });
-            },
-            child: Icon(
-              Icons.shopping_cart,
-              color: Colors.white,
-              size: MediaQuery.of(context).size.height / 30,
-            ),
-          ),
-          if (length >= 0)
-            Padding(
-              padding: const EdgeInsets.only(left: 0.0, right: 0.0),
-              child: Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: CircleAvatar(
-                  radius: 8.0,
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                  child: Text(
-                    length.toString(),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12.0,
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: GFCarousel(
+                  items: imageList.map(
+                    (url) {
+                      return Card(
+                        elevation: 8,
+                        margin: EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                          child: Image.asset('images/$url',
+                              fit: BoxFit.cover, width: 1000.0),
+                        ),
+                      );
+                    },
+                  ).toList(),
+                  onPageChanged: (index) {
+                    setState(() {
+                      length;
+                      index;
+                    });
+                  },
+                  autoPlay: true,
+                  enlargeMainPage: true,
+                  pagination: true,
+                  passiveIndicator: Colors.black,
+                  activeIndicator: Colors.white,
+                  pagerSize: 10,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: SingleChildScrollView(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.52,
+                    child: GridView.count(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 3,
+                      childAspectRatio: 0.825,
+                      children: <Widget>[
+                        categoryCard('Fruits', 'bananas.png', Fruits),
+                        categoryCard('Dairy', 'milk.png', Dairy),
+                        categoryCard(
+                            'Vegetables', 'vegetable1.png', Vegetables),
+                        categoryCard('Snacks', 'snacks.png', Snacks),
+                        categoryCard('Provisions', 'flour.png', Provisions),
+                        categoryCard('Meat', 'meat.png', Meat),
+                        categoryCard('Bakery', 'bread.png', Bakery),
+                        categoryCard('Garden', 'plant.png', Garden),
+                        categoryCard('Food', 'cutlery.png', Food),
+                      ],
                     ),
                   ),
                 ),
-              ),
-            ),
-//          Padding(
-//            padding: const EdgeInsets.all(15.0),
-//            child: InkWell(
-//              onTap: () {
-//                Navigator.push(
-//                    context,
-//                    MaterialPageRoute(
-//                      builder: (context) => OrdersPage(
-//                        ongoingOrders: ongoingOrders,
-//                        pastOrders: pastOrders,
-//                      ),
-//                    ));
-//              },
-//              child: Icon(
-//                Icons.shopping_basket,
-//                color: Colors.white,
-//              ),
-//            ),
-//          ),
-        ],
-      ),
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: GFCarousel(
-              items: imageList.map(
-                (url) {
-                  return Card(
-                    elevation: 8,
-                    margin: EdgeInsets.all(8.0),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        child: Image.asset('images/$url',
-                            fit: BoxFit.cover, width: 1000.0),
-                      ),
-                    ),
-                  );
-                },
-              ).toList(),
-              onPageChanged: (index) {
-                setState(() {
-                  length;
-                  index;
-                });
-              },
-              autoPlay: true,
-              enlargeMainPage: true,
-              pagination: true,
-              passiveIndicator: Colors.black,
-              activeIndicator: Colors.white,
-              pagerSize: 10,
-            ),
+              )
+            ],
           ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: SingleChildScrollView(
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.52,
-                child: GridView.count(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 3,
-                  childAspectRatio: 0.7,
-                  children: <Widget>[
-                    categoryCard('Fruits', 'bananas.png', Fruits),
-                    categoryCard('Dairy', 'milk.png', Dairy),
-                    categoryCard('Vegetables', 'vegetable1.png', Vegetables),
-                    categoryCard('Snacks', 'snacks.png', Snacks),
-                    categoryCard('Provisions', 'flour.png', Provisions),
-                    categoryCard('Meat', 'meat.png', Meat),
-                    categoryCard('Bakery', 'bread.png', Bakery),
-                    categoryCard('Garden', 'plant.png', Garden),
-                    categoryCard('Food', 'cutlery.png', Food),
-                  ],
-                ),
-              ),
-            ),
-          )
-        ],
+        ),
       ),
     );
   }
