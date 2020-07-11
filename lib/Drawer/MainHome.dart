@@ -3,13 +3,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getflutter/components/carousel/gf_carousel.dart';
+import 'package:jwm2/Classes/Cart.dart';
+import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/Classes/DatabaseHelper.dart';
 import 'package:jwm2/Classes/ItemsClass.dart';
-import 'package:jwm2/Classes/Orders.dart';
-import 'package:jwm2/OtherPages/CartPage.dart';
-import 'package:jwm2/OtherPages/OrdersPage.dart';
-import 'package:jwm2/OtherPages/ProfilePage.dart';
-import '../OtherPages/itemPage.dart';
 import 'navDrawer.dart';
 
 class MainHome extends StatefulWidget {
@@ -20,6 +17,10 @@ class MainHome extends StatefulWidget {
 final FirebaseAuth mAuth = FirebaseAuth.instance;
 
 class _MainHomeState extends State<MainHome> {
+  final dbHelper = DatabaseHelper.instance;
+  Cart cartItem;
+  int newQty;
+
   final List<String> imageList = ['fruits.png', 'market.png', 'vegetable.png'];
   // ignore: non_constant_identifier_names
   final List<Items> Fruits = [];
@@ -40,45 +41,13 @@ class _MainHomeState extends State<MainHome> {
   // ignore: non_constant_identifier_names
   final List<Items> Garden = [];
 
-//  List<Orders> pastOrders = [];
-//  List<Orders> ongoingOrders = [];
-//
-//  getOrders() async {
-//    pastOrders.clear();
-//    ongoingOrders.clear();
-//    final FirebaseUser user = await mAuth.currentUser();
-//    DatabaseReference orderRef =
-//        FirebaseDatabase.instance.reference().child('Orders').child(user.uid);
-//    orderRef.once().then((DataSnapshot snapshot) async {
-//      Map<dynamic, dynamic> values = await snapshot.value;
-//      values.forEach((key, values) async {
-//        Orders newOrder = Orders();
-//        newOrder.orderAmount = values['orderAmount'];
-//        print(newOrder.orderAmount);
-//        newOrder.itemsName = List<String>.from(values['itemsName']);
-//        newOrder.itemsQty = List<int>.from(values['itemsQty']);
-//        print(newOrder.itemsQty);
-//        print(newOrder.itemsName);
-//        if (values['isCompleted'] == false) {
-//          print('Ongoing');
-//          ongoingOrders.add(newOrder);
-//        } else {
-//          print('Past');
-//          pastOrders.add(newOrder);
-//        }
-//      });
-//    });
-//
-//    setState(() {
-//      print('Orders fetched');
-//    });
-//
-//    print(ongoingOrders.length);
-//    print(pastOrders.length);
-//  }
+  List<Items> items = [];
+  String category = 'Fruits';
 
-  void getItemsRef(List items, String category) {
+  void getItemsRef() {
+    items.clear();
     getCartLength();
+    print('Retrieving $category');
     DatabaseReference itemsref =
         FirebaseDatabase.instance.reference().child(category);
     itemsref.once().then((DataSnapshot snap) {
@@ -88,6 +57,10 @@ class _MainHomeState extends State<MainHome> {
       var DATA = snap.value;
       items.clear();
       for (var key in KEYS) {
+        print(DATA[key]['Name']);
+        print(DATA[key]['Price']);
+        print(DATA[key]['ImageUrl']);
+        print(DATA[key]['Quantity']);
         Items c = new Items(
           DATA[key]['Name'],
           DATA[key]['ImageUrl'],
@@ -98,12 +71,12 @@ class _MainHomeState extends State<MainHome> {
       }
       setState(() {
         length;
+        items;
         print(items.length);
       });
     });
   }
 
-  final dbHelper = DatabaseHelper.instance;
   int length = 0;
 
   getCartLength() async {
@@ -118,16 +91,7 @@ class _MainHomeState extends State<MainHome> {
   void initState() {
     super.initState();
     getCartLength();
-    getItemsRef(Fruits, 'Fruits');
-    getItemsRef(Vegetables, 'Vegetables');
-    getItemsRef(Snacks, 'Snacks');
-    getItemsRef(Food, 'Food');
-    getItemsRef(Dairy, 'Dairy');
-    getItemsRef(Meat, 'Meat');
-    getItemsRef(Provisions, 'Provisions');
-    getItemsRef(Garden, 'Garden');
-    getItemsRef(Bakery, 'Bakery');
-    // getOrders();
+    getItemsRef();
   }
 
   @override
@@ -140,7 +104,7 @@ class _MainHomeState extends State<MainHome> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(8.0),
                 child: GFCarousel(
                   items: imageList.map(
                     (url) {
@@ -173,31 +137,150 @@ class _MainHomeState extends State<MainHome> {
                 height: 10,
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(10.0),
                 child: SingleChildScrollView(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.52,
-                    child: GridView.count(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 3,
-                      childAspectRatio: 0.825,
-                      children: <Widget>[
-                        categoryCard('Fruits', 'bananas.png', Fruits),
-                        categoryCard('Dairy', 'milk.png', Dairy),
-                        categoryCard(
-                            'Vegetables', 'vegetable1.png', Vegetables),
-                        categoryCard('Snacks', 'snacks.png', Snacks),
-                        categoryCard('Provisions', 'flour.png', Provisions),
-                        categoryCard('Meat', 'meat.png', Meat),
-                        categoryCard('Bakery', 'bread.png', Bakery),
-                        categoryCard('Garden', 'plant.png', Garden),
-                        categoryCard('Food', 'cutlery.png', Food),
-                      ],
-                    ),
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: <Widget>[
+                      categoryCard('Fruits', 'bananas.png', Fruits),
+                      categoryCard('Dairy', 'milk.png', Dairy),
+                      categoryCard('Vegetables', 'vegetable1.png', Vegetables),
+                      categoryCard('Snacks', 'snacks.png', Snacks),
+                      categoryCard('Provisions', 'flour.png', Provisions),
+                      categoryCard('Meat', 'meat.png', Meat),
+                      categoryCard('Bakery', 'bread.png', Bakery),
+                      categoryCard('Garden', 'plant.png', Garden),
+                      categoryCard('Food', 'cutlery.png', Food),
+                    ],
                   ),
                 ),
-              )
+              ),
+              Container(
+                height: 455,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    var item = items[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        decoration: BoxDecoration(
+                          color: kWhiteColor,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: kPrimaryColor, width: 1.5),
+                          boxShadow: [
+                            BoxShadow(
+                                color: kPrimaryColor,
+                                blurRadius: 2.0,
+                                spreadRadius: 0.1),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Image(
+                                image: NetworkImage(item.price),
+                                height: 60,
+                                width: 60,
+                              ),
+                              SizedBox(
+                                width: 15.0,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        item.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .title
+                                            .copyWith(
+                                                color: kTextColor
+                                                    .withOpacity(0.85),
+                                                fontSize: 22.0),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            'Quantity : ',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .body1
+                                                .copyWith(
+                                                    color: kTextColor
+                                                        .withOpacity(0.65),
+                                                    fontSize: 16.0),
+                                          ),
+                                          Text(
+                                            item.quantity,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .body1
+                                                .copyWith(
+                                                    color: kTextColor
+                                                        .withOpacity(0.65),
+                                                    fontSize: 16.0),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 15.0,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  _query(item.name);
+                                  addToCart(
+                                      name: item.name,
+                                      imgUrl: item.imageUrl,
+                                      price: item.price,
+                                      qty: 1);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: kPrimaryColor,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Container(
+                                      child: Text(
+                                        'Add to cart',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .button
+                                            .copyWith(color: kWhiteColor),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
@@ -208,27 +291,84 @@ class _MainHomeState extends State<MainHome> {
   Widget categoryCard(name, image, List name1) {
     return InkWell(
       onTap: () {
+        setState(() {
+          category = name;
+        });
         getCartLength();
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Item(name1)),
-        );
+        getItemsRef();
       },
       child: Card(
-        elevation: 4,
-        child: Column(
-          children: [
-            Image.asset('images/$image'),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              name,
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            )
-          ],
+        elevation: 2,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            children: [
+              Image.asset(
+                'images/$image',
+                height: 35,
+                width: 35,
+              ),
+              SizedBox(
+                width: 15,
+              ),
+              Container(
+                width: 75,
+                child: Text(
+                  name,
+                  style:
+                      Theme.of(context).textTheme.button.copyWith(fontSize: 18),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void addToCart({String name, String imgUrl, String price, int qty}) async {
+    Map<String, dynamic> row = {
+      DatabaseHelper.columnProductName: name,
+      DatabaseHelper.columnImageUrl: imgUrl,
+      DatabaseHelper.columnPrice: price,
+      DatabaseHelper.columnQuantity: qty
+    };
+    Cart item = Cart.fromMap(row);
+    final id = await dbHelper.insert(item);
+    getCartLength();
+  }
+
+  void _query(String name) async {
+    final allRows = await dbHelper.queryRows(name);
+    allRows.forEach((row) => cartItem = Cart.fromMap(row));
+    setState(() {
+      cartItem;
+      print('Updated');
+    });
+  }
+
+  void updateItem(
+      {int id, String name, String imgUrl, String price, int qty}) async {
+    // row to update
+    Cart item = Cart(id, name, imgUrl, price, qty);
+    final rowsAffected = await dbHelper.update(item);
+    _query(name);
+    setState(() {
+      _query(item.productName);
+      print('Updated');
+      cartItem;
+    });
+    getCartLength();
+  }
+
+  void removeItem(String name) async {
+    // Assuming that the number of rows is the id for the last row.
+    final rowsDeleted = await dbHelper.delete(name);
+    _query(name);
+    setState(() {
+      print('Updated');
+      cartItem;
+    });
+    getCartLength();
   }
 }
