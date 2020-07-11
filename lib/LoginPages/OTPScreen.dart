@@ -51,7 +51,7 @@ class _OTPScreenState extends State<OTPScreen> {
             icon: Icon(
               Icons.arrow_back_ios,
             ),
-            color: Colors.white,
+            color: kBlackColor,
             onPressed: () {
               Navigator.pop(context);
             },

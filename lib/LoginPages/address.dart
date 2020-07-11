@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/Drawer/MainHome.dart';
 
 class Address extends StatefulWidget {
@@ -53,20 +54,15 @@ class _AddressState extends State<Address> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            SizedBox(
-              height: 20.0,
-            ),
             TextFormField(
               controller: myController,
               decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
+                  borderSide: BorderSide(color: kPrimaryColor, width: 2.0),
                 ),
                 hintText: 'Full Name',
                 hintStyle: TextStyle(
-                  color: Colors.white.withOpacity(0.6),
+                  color: kTextColor.withOpacity(0.65),
                 ),
               ),
               validator: (name) {
@@ -75,19 +71,21 @@ class _AddressState extends State<Address> {
                 } else
                   return null;
               },
-              style: TextStyle(color: Colors.white, fontSize: 24.0),
+              style: TextStyle(
+                  color: kTextColor.withOpacity(0.85),
+                  fontSize: 24.0,
+                  fontFamily: 'Cabin'),
             ),
+            Spacer(),
             TextFormField(
               controller: myController1,
               decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
+                  borderSide: BorderSide(color: kPrimaryColor, width: 2.0),
                 ),
                 hintText: 'Address Line 1',
                 hintStyle: TextStyle(
-                  color: Colors.white.withOpacity(0.6),
+                  color: kTextColor.withOpacity(0.65),
                 ),
               ),
               validator: (line1) {
@@ -96,22 +94,21 @@ class _AddressState extends State<Address> {
                 } else
                   return null;
               },
-              style: TextStyle(color: Colors.white, fontSize: 24.0),
+              style: TextStyle(
+                  color: kTextColor.withOpacity(0.85),
+                  fontSize: 24.0,
+                  fontFamily: 'Cabin'),
             ),
-            SizedBox(
-              height: 20.0,
-            ),
+            Spacer(),
             TextFormField(
               controller: myController2,
               decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
+                  borderSide: BorderSide(color: kPrimaryColor, width: 2.0),
                 ),
                 hintText: 'Address Line 2',
                 hintStyle: TextStyle(
-                  color: Colors.white.withOpacity(0.6),
+                  color: kTextColor.withOpacity(0.65),
                 ),
               ),
               validator: (line2) {
@@ -120,22 +117,21 @@ class _AddressState extends State<Address> {
                 } else
                   return null;
               },
-              style: TextStyle(color: Colors.white, fontSize: 24.0),
+              style: TextStyle(
+                  color: kTextColor.withOpacity(0.85),
+                  fontSize: 24.0,
+                  fontFamily: 'Cabin'),
             ),
-            SizedBox(
-              height: 20.0,
-            ),
+            Spacer(),
             TextFormField(
               controller: myController3,
               decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
+                  borderSide: BorderSide(color: kPrimaryColor, width: 2.0),
                 ),
                 hintText: 'Pincode',
                 hintStyle: TextStyle(
-                  color: Colors.white.withOpacity(0.6),
+                  color: kTextColor.withOpacity(0.65),
                 ),
               ),
               validator: (pincode) {
@@ -144,11 +140,12 @@ class _AddressState extends State<Address> {
                 } else
                   return null;
               },
-              style: TextStyle(color: Colors.white, fontSize: 24.0),
+              style: TextStyle(
+                  color: kTextColor.withOpacity(0.85),
+                  fontSize: 24.0,
+                  fontFamily: 'Cabin'),
             ),
-            SizedBox(
-              height: 25.0,
-            ),
+            Spacer(),
             InkWell(
               onTap: () async {
                 FirebaseUser user = await mAuth.currentUser();
@@ -173,14 +170,14 @@ class _AddressState extends State<Address> {
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 34.0),
                 decoration: BoxDecoration(
-                    color: Color(0xFFfc9d9d),
+                    color: kPrimaryColor,
                     borderRadius: BorderRadius.circular(15.0)),
                 child: Text(
                   'SAVE',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold),
+                  style: Theme.of(context)
+                      .textTheme
+                      .button
+                      .copyWith(fontSize: 20.0, color: kWhiteColor),
                 ),
               ),
             ),

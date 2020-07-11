@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:jwm2/Classes/Constants.dart';
 
 import '../Drawer/MainHome.dart';
 import '../LoginPages/addressFrame.dart';
@@ -65,7 +66,7 @@ class _SignedInState extends State<SignedIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF900c3f),
+      backgroundColor: kPrimaryColor,
       body: Center(
         child: Container(
           child: Center(
@@ -87,7 +88,7 @@ class _SignedInState extends State<SignedIn> {
                       fontSize: 30.0,
                       fontWeight: FontWeight.w500,
                       color: Colors.white,
-                      fontFamily: 'sf_pro'),
+                      fontFamily: 'Cabin'),
                 ),
                 SizedBox(
                   height: 30,
@@ -98,7 +99,7 @@ class _SignedInState extends State<SignedIn> {
                       fontSize: 20.0,
                       fontWeight: FontWeight.w500,
                       color: Colors.white,
-                      fontFamily: 'sf_pro'),
+                      fontFamily: 'Cabin'),
                 ),
               ],
             ),

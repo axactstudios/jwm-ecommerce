@@ -91,11 +91,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             shape: BoxShape.rectangle,
                             border: Border.all(color: kBorderColor, width: 1.0),
                             borderRadius: BorderRadius.all(
-                              Radius.circular(30.0),
+                              Radius.circular(25.0),
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            padding: EdgeInsets.all(16),
                             child: Text(
                               "CONTINUE",
                               textAlign: TextAlign.center,
