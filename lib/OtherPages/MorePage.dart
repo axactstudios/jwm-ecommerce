@@ -56,6 +56,7 @@ class _MorePageState extends State<MorePage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -72,10 +73,8 @@ class _MorePageState extends State<MorePage> {
                     children: <Widget>[
                       Text(
                         'Hi,',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline
-                            .copyWith(color: kWhiteColor, fontSize: 56.0),
+                        style: Theme.of(context).textTheme.headline.copyWith(
+                            color: kWhiteColor, fontSize: size.height * 0.06),
                       ),
                       user == null
                           ? Text(
@@ -83,21 +82,25 @@ class _MorePageState extends State<MorePage> {
                               style: Theme.of(context)
                                   .textTheme
                                   .headline
-                                  .copyWith(color: kWhiteColor, fontSize: 40.0),
+                                  .copyWith(
+                                      color: kWhiteColor,
+                                      fontSize: size.height * 0.04),
                             )
                           : Text(
                               '${userData.name}',
                               style: Theme.of(context)
                                   .textTheme
                                   .headline
-                                  .copyWith(color: kWhiteColor, fontSize: 40.0),
+                                  .copyWith(
+                                      color: kWhiteColor,
+                                      fontSize: size.height * 0.04),
                             ),
                     ],
                   ),
                 ),
               ),
               position: Position.BOTTOM_LEFT,
-              clipHeight: 90.0,
+              clipHeight: size.height * 0.1,
             ),
             Spacer(),
             Padding(
@@ -130,15 +133,14 @@ class _MorePageState extends State<MorePage> {
                       children: <Widget>[
                         Icon(
                           Icons.account_circle,
-                          size: 35.0,
+                          size: size.height * 0.036,
                           color: kPrimaryColor,
                         ),
                         Text(
                           'Profile',
-                          style: Theme.of(context)
-                              .textTheme
-                              .title
-                              .copyWith(color: kPrimaryColor, fontSize: 30.0),
+                          style: Theme.of(context).textTheme.title.copyWith(
+                              color: kPrimaryColor,
+                              fontSize: size.height * 0.036),
                         ),
                       ],
                     ),
@@ -177,15 +179,14 @@ class _MorePageState extends State<MorePage> {
                       children: <Widget>[
                         Icon(
                           Icons.supervisor_account,
-                          size: 35.0,
+                          size: size.height * 0.036,
                           color: kPrimaryColor,
                         ),
                         Text(
                           'Support',
-                          style: Theme.of(context)
-                              .textTheme
-                              .title
-                              .copyWith(color: kPrimaryColor, fontSize: 30.0),
+                          style: Theme.of(context).textTheme.title.copyWith(
+                              color: kPrimaryColor,
+                              fontSize: size.height * 0.036),
                         ),
                       ],
                     ),
@@ -225,7 +226,7 @@ class _MorePageState extends State<MorePage> {
                             children: <Widget>[
                               Icon(
                                 FontAwesomeIcons.signInAlt,
-                                size: 30.0,
+                                size: size.height * 0.036,
                                 color: kPrimaryColor,
                               ),
                               Text(
@@ -234,7 +235,8 @@ class _MorePageState extends State<MorePage> {
                                     .textTheme
                                     .title
                                     .copyWith(
-                                        color: kPrimaryColor, fontSize: 30.0),
+                                        color: kPrimaryColor,
+                                        fontSize: size.height * 0.036),
                               ),
                             ],
                           ),
@@ -267,7 +269,7 @@ class _MorePageState extends State<MorePage> {
                             children: <Widget>[
                               Icon(
                                 FontAwesomeIcons.signOutAlt,
-                                size: 30.0,
+                                size: size.height * 0.036,
                                 color: kPrimaryColor,
                               ),
                               Text(
@@ -276,7 +278,8 @@ class _MorePageState extends State<MorePage> {
                                     .textTheme
                                     .title
                                     .copyWith(
-                                        color: kPrimaryColor, fontSize: 30.0),
+                                        color: kPrimaryColor,
+                                        fontSize: size.height * 0.036),
                               ),
                             ],
                           ),

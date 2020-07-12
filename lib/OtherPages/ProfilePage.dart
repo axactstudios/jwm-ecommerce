@@ -91,8 +91,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: BoxDecoration(
                       color: kWhiteColor,
                       borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(250),
-                        bottomRight: Radius.circular(250),
+                        bottomLeft: Radius.circular(size.width * 0.5),
+                        bottomRight: Radius.circular(size.width * 0.5),
                       ),
                       border: Border.all(color: kPrimaryColor, width: 2.0),
                       boxShadow: [
@@ -109,11 +109,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Icon(
                             Icons.account_circle,
                             color: kPrimaryColor,
-                            size: 150,
+                            size: size.height * 0.15,
                           ),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: size.height * 0.005,
                         ),
                         Container(
                           child: Text(
@@ -121,7 +121,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             style: TextStyle(
                                 color: kPrimaryColor,
                                 fontWeight: FontWeight.w600,
-                                fontSize: 25,
+                                fontSize: size.height * 0.028,
                                 fontFamily: 'Cabin',
                                 letterSpacing: 5),
                           ),
@@ -156,7 +156,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Icon(
                                         Icons.person,
                                         color: kPrimaryColor,
-                                        size: 30,
+                                        size: size.height * 0.032,
                                       ),
                                       SizedBox(
                                         width: size.width * 0.1,
@@ -169,7 +169,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                               .title
                                               .copyWith(
                                                   color: kPrimaryColor,
-                                                  fontSize: 25),
+                                                  fontSize:
+                                                      size.height * 0.028),
                                         ),
                                       ),
                                     ],
@@ -177,7 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ),
                               SizedBox(
-                                height: 25.0,
+                                height: size.height * 0.025,
                               ),
                               Container(
                                 width: size.width * 0.9,
@@ -195,7 +196,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Icon(
                                         Icons.phone,
                                         color: kPrimaryColor,
-                                        size: 30,
+                                        size: size.height * 0.032,
                                       ),
                                       SizedBox(
                                         width: size.width * 0.1,
@@ -208,7 +209,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                               .title
                                               .copyWith(
                                                   color: kPrimaryColor,
-                                                  fontSize: 25),
+                                                  fontSize:
+                                                      size.height * 0.028),
                                         ),
                                       ),
                                     ],
@@ -216,7 +218,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ),
                               SizedBox(
-                                height: 25.0,
+                                height: size.height * 0.025,
                               ),
                               Container(
                                 width: size.width * 0.9,
@@ -234,7 +236,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Icon(
                                         Icons.home,
                                         color: kPrimaryColor,
-                                        size: 30,
+                                        size: size.height * 0.032,
                                       ),
                                       SizedBox(
                                         width: size.width * 0.1,
@@ -250,7 +252,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                               .title
                                               .copyWith(
                                                   color: kPrimaryColor,
-                                                  fontSize: 25),
+                                                  fontSize:
+                                                      size.height * 0.028),
                                         ),
                                       ),
                                     ],
@@ -258,7 +261,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ),
                               SizedBox(
-                                height: 25.0,
+                                height: size.height * 0.025,
                               ),
                               Container(
                                 width: size.width * 0.9,
@@ -276,7 +279,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Icon(
                                         Icons.location_city,
                                         color: kPrimaryColor,
-                                        size: 30,
+                                        size: size.height * 0.032,
                                       ),
                                       SizedBox(
                                         width: size.width * 0.1,
@@ -289,7 +292,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                               .title
                                               .copyWith(
                                                   color: kPrimaryColor,
-                                                  fontSize: 25),
+                                                  fontSize:
+                                                      size.height * 0.028),
                                         ),
                                       ),
                                     ],
@@ -297,7 +301,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ),
                               SizedBox(
-                                height: 25.0,
+                                height: size.height * 0.025,
                               ),
                               Container(
                                 width: size.width * 0.9,
@@ -315,7 +319,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Icon(
                                         Icons.location_on,
                                         color: kPrimaryColor,
-                                        size: 30,
+                                        size: size.height * 0.032,
                                       ),
                                       SizedBox(
                                         width: size.width * 0.1,
@@ -328,7 +332,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                               .title
                                               .copyWith(
                                                   color: kPrimaryColor,
-                                                  fontSize: 25),
+                                                  fontSize:
+                                                      size.height * 0.028),
                                         ),
                                       ),
                                     ],

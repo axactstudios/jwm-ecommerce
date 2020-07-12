@@ -7,8 +7,10 @@ import 'package:jwm2/Classes/Cart.dart';
 import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/Classes/DatabaseHelper.dart';
 import 'package:jwm2/NavBar.dart';
+import 'package:jwm2/OtherPages/OrdersPage.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -251,17 +253,31 @@ class _CartPageState extends State<CartPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                FittedBox(
-                                  child: Text(
-                                    "Order Total = Rs. ${(totalAmount() + (0.18 * totalAmount()) + 40).toStringAsFixed(2)}  ",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Cabin',
-                                        fontSize:
-                                            MediaQuery.of(context).size.height /
-                                                40),
-                                  ),
-                                ),
+                                cartItems.length == 0
+                                    ? FittedBox(
+                                        child: Text(
+                                          "Order Total = Rs. ${(totalAmount() + (0.18 * totalAmount()) + 00).toStringAsFixed(2)}  ",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Cabin',
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  40),
+                                        ),
+                                      )
+                                    : FittedBox(
+                                        child: Text(
+                                          "Order Total = Rs. ${(totalAmount() + (0.18 * totalAmount()) + 40).toStringAsFixed(2)}  ",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Cabin',
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  40),
+                                        ),
+                                      ),
                                 FittedBox(
                                   child: Text(
                                     "Products Total = Rs. ${totalAmount()}",
@@ -284,17 +300,31 @@ class _CartPageState extends State<CartPage> {
                                                 60),
                                   ),
                                 ),
-                                FittedBox(
-                                  child: Text(
-                                    "Delivery Charges = Rs. 40.0",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Cabin',
-                                        fontSize:
-                                            MediaQuery.of(context).size.height /
-                                                60),
-                                  ),
-                                ),
+                                cartItems.length == 0
+                                    ? FittedBox(
+                                        child: Text(
+                                          "Delivery Charges = Rs. 0.00",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Cabin',
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  60),
+                                        ),
+                                      )
+                                    : FittedBox(
+                                        child: Text(
+                                          "Delivery Charges = Rs. 40.0",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Cabin',
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  60),
+                                        ),
+                                      ),
                               ],
                             ),
                           ),
@@ -374,13 +404,13 @@ class _CartPageState extends State<CartPage> {
                         ],
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height / 40,
+                        height: MediaQuery.of(context).size.height / 80,
                       ),
                       InkWell(
                         onTap: () {},
                         child: Container(
                           width: MediaQuery.of(context).size.height - 20,
-                          height: MediaQuery.of(context).size.height / 18,
+                          height: MediaQuery.of(context).size.height * 0.05,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(
                               Radius.circular(10),
@@ -448,12 +478,32 @@ class _CartPageState extends State<CartPage> {
     });
 
     print('Order Placed');
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => NavBar(),
-      ),
-    );
+
+    for (int i = 0; i < cartItems.length; i++) {
+      removeItem(cartItems[i].productName);
+    }
+
+    Alert(
+      context: context,
+      type: AlertType.success,
+      title: "Order Placed",
+      desc: "Your order has been placed successfully.",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "OK",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OrdersPage(),
+            ),
+          ),
+          width: 120,
+        )
+      ],
+    ).show();
   }
 
   double totalAmount() {

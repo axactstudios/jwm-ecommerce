@@ -88,36 +88,37 @@ class _MainHomeState extends State<MainHome> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: GFCarousel(
-                  items: imageList.map(
-                    (url) {
-                      return Card(
-                        elevation: 8,
-                        margin: EdgeInsets.all(8.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                          child: Image.asset('images/$url',
-                              fit: BoxFit.cover, width: 1000.0),
-                        ),
-                      );
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.28,
+                  child: GFCarousel(
+                    items: imageList.map(
+                      (url) {
+                        return Card(
+                          elevation: 8,
+                          margin: EdgeInsets.all(8.0),
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(5.0)),
+                            child: Image.asset('images/$url',
+                                fit: BoxFit.cover, width: 1000.0),
+                          ),
+                        );
+                      },
+                    ).toList(),
+                    onPageChanged: (index) {
+                      setState(() {
+                        length;
+                        index;
+                      });
                     },
-                  ).toList(),
-                  onPageChanged: (index) {
-                    setState(() {
-                      length;
-                      index;
-                    });
-                  },
-                  autoPlay: true,
-                  enlargeMainPage: true,
-                  pagination: true,
-                  passiveIndicator: Colors.black,
-                  activeIndicator: Colors.white,
-                  pagerSize: 10,
+                    autoPlay: true,
+                    enlargeMainPage: true,
+                    pagination: true,
+                    passiveIndicator: Colors.black,
+                    activeIndicator: Colors.white,
+                    pagerSize: 10,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 10,
               ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -211,7 +212,7 @@ class _MainHomeState extends State<MainHome> {
                                               MainAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              'Price : Rs',
+                                              'Price : Rs ',
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .body1
@@ -334,7 +335,7 @@ class _MainHomeState extends State<MainHome> {
                 width: 15,
               ),
               Container(
-                width: 75,
+                width: MediaQuery.of(context).size.width * 0.25,
                 child: Text(
                   name,
                   style:
