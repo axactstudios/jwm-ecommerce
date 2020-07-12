@@ -70,6 +70,7 @@ class _OrdersPageState extends State<OrdersPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: kPrimaryColor,
           bottom: TabBar(
             tabs: <Widget>[
               Tab(

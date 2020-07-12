@@ -43,6 +43,7 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: kWhiteColor,
       appBar: AppBar(
           backgroundColor: kWhiteColor,
@@ -58,8 +59,7 @@ class _OTPScreenState extends State<OTPScreen> {
           )),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
-        child: ListView(
-          shrinkWrap: true,
+        child: Column(
           children: <Widget>[
             Container(
               padding: EdgeInsets.only(left: 16.0, bottom: 16, top: 4),
