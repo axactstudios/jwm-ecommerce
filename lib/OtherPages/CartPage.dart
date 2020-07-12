@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jwm2/Classes/Cart.dart';
 import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/Classes/DatabaseHelper.dart';
+import 'package:jwm2/NavBar.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -447,7 +448,12 @@ class _CartPageState extends State<CartPage> {
     });
 
     print('Order Placed');
-    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => NavBar(),
+      ),
+    );
   }
 
   double totalAmount() {

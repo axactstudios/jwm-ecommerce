@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/Drawer/support_page.dart';
 
 class ContactUsPage extends StatefulWidget {
@@ -44,13 +45,13 @@ class _ContactUsPageState extends State<ContactUsPage> {
         title: Text(
           'Have any complaint? ',
           style: TextStyle(
-            color: Color(0xFF900c3f),
+            color: kTextColor,
           ),
         ),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: Color(0xFF900c3f),
+            color: kTextColor,
           ),
           onPressed: () => Navigator.pop(context),
         ),

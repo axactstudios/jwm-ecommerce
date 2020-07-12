@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/Classes/User.dart';
 import 'package:flutter/material.dart';
 
@@ -23,46 +24,38 @@ class _AddressFrame2State extends State<AddressFrame2> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Color(0xFF900c3f),
+        backgroundColor: kWhiteColor,
         body: SingleChildScrollView(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: 100,
+                  height: 200,
                 ),
-                SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      'Enter Primary Address',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 40.0,
-                          fontFamily: 'sf_pro'),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Text(
+                    'Enter Primary Address',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline
+                        .copyWith(fontSize: 30.0, color: kTextColor),
                   ),
                 ),
                 SizedBox(
-                  height: 35,
+                  height: 60,
                 ),
-                Center(
-                  child: Container(
-                    height: 360,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: PageView(
-                        controller: pageController,
-                        children: <Widget>[
-                          Center(
-                            child: Address2(
-                              userData: widget.userData,
-                            ),
-                          )
-                        ],
-                      ),
+                Container(
+                  height: 360,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: PageView(
+                      controller: pageController,
+                      children: <Widget>[
+                        Address2(userData: widget.userData),
+                      ],
                     ),
                   ),
                 ),
