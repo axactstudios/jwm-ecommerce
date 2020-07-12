@@ -11,6 +11,7 @@ import 'package:jwm2/OtherPages/OrdersPage.dart';
 import 'package:jwm2/OtherPages/ProfilePage.dart';
 
 import 'Classes/Orders.dart';
+import 'OtherPages/MorePage.dart';
 
 class NavBar extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _NavBarState extends State<NavBar> {
     TabItemIcon(iconData: Icons.home, curveColor: Colors.orange),
     TabItemIcon(iconData: Icons.shopping_cart, curveColor: Colors.green),
     TabItemIcon(iconData: Icons.list, curveColor: Colors.orange),
-    TabItemIcon(iconData: Icons.account_circle, curveColor: Colors.green),
+    TabItemIcon(iconData: Icons.settings, curveColor: Colors.green),
   ];
   void onChangeTab(int index) {
     selectedIndex = index;
@@ -36,7 +37,7 @@ class _NavBarState extends State<NavBar> {
       length: iconList.length,
       child: Scaffold(
         body: TabBarView(
-          children: [MainHome(), CartPage(), OrdersPage(), ProfilePage()],
+          children: [MainHome(), CartPage(), OrdersPage(), MorePage()],
         ),
         bottomNavigationBar: JumpingTabBar(
           onChangeTab: onChangeTab,
