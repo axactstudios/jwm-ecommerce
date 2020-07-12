@@ -2,6 +2,7 @@ import 'package:diagonal/diagonal.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jwm2/Classes/Constants.dart';
 import 'package:jwm2/Classes/User.dart';
 import 'package:jwm2/Drawer/support_page.dart';
@@ -223,8 +224,8 @@ class _MorePageState extends State<MorePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Icon(
-                                Icons.input,
-                                size: 35.0,
+                                FontAwesomeIcons.signInAlt,
+                                size: 30.0,
                                 color: kPrimaryColor,
                               ),
                               Text(
@@ -265,8 +266,8 @@ class _MorePageState extends State<MorePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Icon(
-                                Icons.exit_to_app,
-                                size: 35.0,
+                                FontAwesomeIcons.signOutAlt,
+                                size: 30.0,
                                 color: kPrimaryColor,
                               ),
                               Text(
