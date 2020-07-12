@@ -43,8 +43,8 @@ class _NavBarState extends State<NavBar> {
           onChangeTab: onChangeTab,
           circleGradient: LinearGradient(
             colors: [
-              Colors.purpleAccent,
-              Colors.deepPurple,
+              kPrimaryColor,
+              kWhiteColor,
             ],
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
