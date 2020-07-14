@@ -42,7 +42,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 height: pHeight / 70,
               ),
               Text(
-                'Providing quality products at your doorstep',
+                'Everything your pet needs at one place',
                 textAlign: TextAlign.start,
                 // ignore: deprecated_member_use
                 style: Theme.of(context).textTheme.title.copyWith(
