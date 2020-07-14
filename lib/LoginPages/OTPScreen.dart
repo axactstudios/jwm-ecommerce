@@ -73,7 +73,7 @@ class _OTPScreenState extends State<OTPScreen> {
                     height: 250,
                   ),
                   Text(
-                    "Buy Fresh Daily, Eat Fresh Daily",
+                    "The best care you pet can get",
                     style: Theme.of(context).textTheme.title.copyWith(
                         color: kTextColor.withOpacity(0.75), fontSize: 25.0),
                   ),
